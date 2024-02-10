@@ -1,187 +1,20 @@
 ﻿using System;
+using Task1;
+using Task2;
 
 namespace Lab3CSharp
 {
-    public class Date
+    public class Program
     {
-        protected int day;
-        protected int month;
-        protected int year;
-
-        public Date(int day, int month, int year)
+        public static void Task1()
         {
-            if (!IsValidDate(day, month, year))
-            {
-                throw new ArgumentException("Incorrect date.");
-            }
-
-            this.day = day;
-            this.month = month;
-            this.year = year;
-        }
-
-        public int Day
-        {
-            get { return day; }
-            set
-            {
-                if (IsValidDate(value, month, year))
-                {
-                    day = value;
-                }
-                else
-                {
-                    throw new ArgumentException("Incorrect day.");
-                }
-            }
-        }
-        public int Month
-        {
-            get { return month; }
-            set
-            {
-                if (IsValidDate(day, value, year))
-                {
-                    month = value;
-                }
-                else
-                {
-                    throw new ArgumentException("Incorrect month.");
-                }
-            }
-        }
-        public int Year
-        {
-            get { return year; }
-            set
-            {
-                if (IsValidDate(day, month, value))
-                {
-                    year = value;
-                }
-                else
-                {
-                    throw new ArgumentException("Incorrect year.");
-                }
-            }
-        }
-
-        public static bool IsValidDate(int day, int month, int year)
-        {
-            if (year < 1)
-            {
-                return false;
-            }
-
-            if (month < 1 || month > 12)
-            {
-                return false;
-            }
-
-            int maxDaysInMonth = GetDaysInMonth(year, month);
-
-            if (day < 1 || day > maxDaysInMonth)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        public static string GetMonthName(int month)
-        {
-            switch (month)
-            {
-                case 1:
-                    return "January";
-                case 2:
-                    return "February";
-                case 3:
-                    return "March";
-                case 4:
-                    return "April";
-                case 5:
-                    return "May";
-                case 6:
-                    return "June";
-                case 7:
-                    return "July";
-                case 8:
-                    return "August";
-                case 9:
-                    return "September";
-                case 10:
-                    return "October";
-                case 11:
-                    return "November";
-                case 12:
-                    return "December";
-                default:
-                    throw new ArgumentException("Incorrect number of month.");
-            }
-        }
-
-        public void PrintDateInMonthFormat()
-        {
-            Console.WriteLine($"{day} {GetMonthName(month)} {year} year");
-        }
-
-        public void PrintDateInDotFormat()
-        {
-            Console.WriteLine($"{day:D2}.{month:D2}.{year}");
-        }
-
-        public int GetCentury
-        {
-            get { return (year - 1) / 100 + 1; }
-        }
-
-        private static int GetDaysInMonth(int year, int month)
-        {
-            switch (month)
-            {
-                case 4:
-                case 6:
-                case 9:
-                case 11:
-                    return 30;
-                case 2:
-                    return IsLeapYear(year) ? 29 : 28;
-                default:
-                    return 31;
-            }
-        }
-
-        private static bool IsLeapYear(int year)
-        {
-            return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
-        }
-
-        public static int DaysBetweenDates(Date date1, Date date2)
-        {
-            int daysInMonth1 = GetDaysInMonth(date1.Year, date1.Month);
-            int daysInMonth2 = GetDaysInMonth(date2.Year, date2.Month);
-
-            int totalDays1 = date1.Day + (date1.Month - 1) * daysInMonth1;
-            int totalDays2 = date2.Day + (date2.Month - 1) * daysInMonth2;
-
-            return Math.Abs(totalDays2 - totalDays1);
-        }
-    }
-
-    internal class Program
-    {
-        static void Main(string[] args)
-        {
-            Console.WriteLine("Lab 3 ");
-
-            Date[] dates = new Date[]
-            {
+            Date[] dates =
+            [
                 new Date(5, 1, 2022),
                 new Date(15, 3, 2022),
                 new Date(25, 12, 2021),
                 new Date(10, 9, 2023)
-            };
+            ];
 
             Console.WriteLine("Before sort: ");
             foreach (var date in dates)
@@ -231,6 +64,74 @@ namespace Lab3CSharp
 
             Console.WriteLine();
             Console.WriteLine($"Maximum number of days between dates: {maxDays}");
+        }
+
+        public static void Task2()
+        {
+            List<Document> documents = new List<Document>();
+
+            documents.Add(
+                new Invoice(
+                    "INV123",
+                    DateTime.Now,
+                    1000.50m,
+                    "Seller1",
+                    "Buyer1",
+                    "Goods description"
+                )
+            );
+            documents.Add(new Receipt("REC456", DateTime.Now, 500.75m, "Payer1"));
+            documents.Add(
+                new Waybill(
+                    "WAY789",
+                    DateTime.Now,
+                    1200.30m,
+                    "Sender1",
+                    "Receiver1",
+                    new List<string> { "Item1", "Item2", "Item3" }
+                )
+            );
+
+            foreach (var document in documents)
+            {
+                document.Show();
+                Console.WriteLine();
+            }
+        }
+
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Lab 3 CSharp");
+
+            while (true)
+            {
+                Console.WriteLine("=========================================================");
+                Console.WriteLine("Select a task:");
+                Console.WriteLine("1. Task 1");
+                Console.WriteLine("2. Task 2");
+                Console.WriteLine("3. Exit");
+                Console.WriteLine("=========================================================");
+                Console.Write("Enter your choice >>> ");
+                string? choice = Console.ReadLine();
+
+                switch (choice)
+                {
+                    case "1":
+                        Task1();
+                        break;
+
+                    case "2":
+                        Task2();
+                        break;
+
+                    case "3":
+                        return;
+
+                    default:
+                        Console.WriteLine("Invalid choice. Please enter a valid option.");
+                        break;
+                }
+            }
         }
     }
 }
