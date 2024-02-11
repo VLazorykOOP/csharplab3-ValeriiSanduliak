@@ -22,6 +22,11 @@ namespace Task2
             this.amount = amount;
         }
 
+        public DateTime Date
+        {
+            get { return date; }
+        }
+
         public virtual void Show()
         {
             Console.WriteLine($"Document Number: {documentNumber}");

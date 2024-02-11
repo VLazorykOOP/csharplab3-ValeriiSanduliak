@@ -68,31 +68,40 @@ namespace Lab3CSharp
 
         public static void Task2()
         {
-            List<Document> documents = new List<Document>();
-
-            documents.Add(
+            Document[] documents =
+            [
                 new Invoice(
                     "INV123",
-                    DateTime.Now,
+                    DateTime.Parse("2024-02-10"),
                     1000.50m,
                     "Seller1",
                     "Buyer1",
                     "Goods description"
-                )
-            );
-            documents.Add(new Receipt("REC456", DateTime.Now, 500.75m, "Payer1"));
-            documents.Add(
+                ),
+                new Receipt("REC456", DateTime.Parse("2024-02-05"), 500.75m, "Payer1"),
                 new Waybill(
                     "WAY789",
-                    DateTime.Now,
+                    DateTime.Parse("2024-02-08"),
                     1200.30m,
                     "Sender1",
                     "Receiver1",
                     new List<string> { "Item1", "Item2", "Item3" }
                 )
-            );
+            ];
 
+            Console.WriteLine("Unsorted Array:");
             foreach (var document in documents)
+            {
+                document.Show();
+                Console.WriteLine();
+            }
+
+            Console.WriteLine();
+
+            var sortedDocuments = documents.OrderBy(doc => doc.Date).ToArray();
+
+            Console.WriteLine("Sorted Array:");
+            foreach (var document in sortedDocuments)
             {
                 document.Show();
                 Console.WriteLine();
